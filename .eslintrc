@@ -1,0 +1,12 @@
+{
+  "env": {
+    "node": true
+  },
+
+  "rules": {
+    "quotes": [2, "single"],
+    "strict": 0,
+    "no-console": 0,
+    "no-use-before-define": 0
+  }
+}
