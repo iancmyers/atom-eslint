@@ -1,6 +1,6 @@
 {
   "name": "atom-eslint",
-  "main": "./lib/atom-eslint.js",
+  "main": "./lib/atom-eslint",
   "version": "0.0.1",
   "description": "Lint your JavaScript files in Atom with ESLint",
   "repository": "https://github.com/iancmyers/atom-eslint",
