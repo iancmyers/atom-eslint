@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "eslint": "~0.4.1",
-    "underscore": "~1.6.0"
+    "underscore": "~1.6.0",
+    "emissary": "~1.0.0"
   }
 }
