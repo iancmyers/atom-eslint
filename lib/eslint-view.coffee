@@ -1,57 +1,53 @@
 eslint = require('eslint').linter
-fs = require 'fs'
-_ = require 'underscore'
+{$, $$, SelectListView} = require 'atom'
 
 module.exports =
-class ESLintView
+class ESLintView extends SelectListView
 
-  constructor: (@editorView) ->
+  initialize: (@editorView, @config) ->
+    super
+    @addClass('eslint-report overlay from-top')
     @editor = @editorView.getEditor()
-    @config = @loadConfig()
+    @buffer = @editor.getBuffer()
 
-    @subscribeToBuffer()
+    atom.workspaceView.command "eslint:toggle", @toggle
 
-  subscribeToBuffer: =>
-    @unsubscribeFromBuffer()
+  viewForItem: ({message, line, column}) ->
+    $$ ->
+      @li =>
+        @span class: 'eslint-line eslint-loc', line
+        @span class: 'eslint-separator', ':'
+        @span class: 'eslint-column eslint-loc', column
+        @span class: 'eslint-message', ' ' + message
 
-    if @buffer = @editor.getBuffer()
-      @buffer.on 'contents-modified', @update
+  toggle: =>
+    if @hasParent()
+      @cancel()
+    else
+      @attach()
 
-  unsubscribeFromBuffer: =>
-    if @buffer?
-      @buffer.off 'contents-modified', @update
-      @buffer = null
+  getEmptyMessage: (itemCount, filteredItemCount) ->
+    if itemCount is 0
+      'No errors found.'
+    else if filteredItemCount is 0
+      'No matching errors found.'
+    else
+      super
 
-  update: =>
-    @lint()
-    @display()
+  getFilterKey: ->
+    'message'
 
   lint: ->
     text = @buffer.getText()
-    @messages = eslint.verify text, @config
+    messages = eslint.verify text, @config
+    messages
 
-  display: =>
-    if @messages?
-      gutter = @editorView.gutter
-      gutter.removeClassFromAllLines 'atom-eslint-error'
+  attach: ->
+    @storeFocusedElement()
+    @setItems(@lint())
+    atom.workspaceView.append(this)
+    @focusFilterEditor()
 
-      @messages.forEach (message) ->
-        gutter.addClassToLine message.line - 1, 'atom-eslint-error'
-
-  loadConfig: ->
-    configPath = atom.project.path + '/.eslintrc'
-    mergedConfig = {}
-    defaults = eslint.defaults()
-
-    if fs.existsSync configPath
-      configFile = fs.readFileSync configPath, 'UTF8'
-      try eslintrc = JSON.parse configFile
-      catch e
-        console.error 'Could not parse .eslintrc file'
-
-      mergedConfig.rules = _.extend defaults.rules, eslintrc.rules
-      mergedConfig.env = _.extend defaults.env, eslintrc.env
-    else
-      mergedConfig = defaults
-
-    mergedConfig
+  confirmed: ({line, column}) ->
+    @cancel()
+    @editor.setCursorBufferPosition([line - 1, column])

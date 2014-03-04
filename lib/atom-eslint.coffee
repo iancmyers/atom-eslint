@@ -1,15 +1,32 @@
 ESLintView = require './eslint-view'
+fs = require 'fs'
+_ = require 'underscore'
+eslint = require('eslint').linter
 
 module.exports =
+  config: {}
 
-  activate: ->
+  activate: (state) ->
+    atom.workspaceView.eachEditorView (editorView) =>
+      if editorView.attached and not editorView.mini
+        config = @loadConfig()
+        eslintView = new ESLintView(editorView, config)
 
-    atom.workspaceView.eachEditorView (editorView) ->
-      editor = editorView.getEditor()
+  loadConfig: ->
+    unless @config?
+      configPath = atom.project.path + '/.eslintrc'
+      mergedConfig = {}
+      defaults = eslint.defaults()
 
-      if editor.getTitle().match /\.js$/
-        eslintView = new ESLintView(editorView)
+      if fs.existsSync configPath
+        configFile = fs.readFileSync configPath, 'UTF8'
+        try eslintrc = JSON.parse configFile
+        catch e
+          console.error 'Could not parse .eslintrc file'
 
-        editorView.on 'editor:path-changed', eslintView.subscribeToBuffer
-        editorView.on 'editor:display-updated', eslintView.display
-        editorView.on 'editor:will-be-removed', eslintView.unsubscribeFromBuffer
+        mergedConfig.rules = _.extend defaults.rules, eslintrc.rules
+        mergedConfig.env = _.extend defaults.env, eslintrc.env
+      else
+        mergedConfig = defaults
+
+    @config = mergedConfig
