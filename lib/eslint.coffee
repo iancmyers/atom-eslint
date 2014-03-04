@@ -25,6 +25,7 @@ module.exports =
     @editorViewSubscription = null
     @eslintViews.forEach (eslintView) -> eslintView.remove()
     @eslintViews = []
+    @config = null
 
   loadConfig: ->
     configPath = atom.project.getPath() + '/.eslintrc'
