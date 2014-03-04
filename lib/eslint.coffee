@@ -5,12 +5,28 @@ eslint = require('eslint').linter
 
 module.exports =
   config: {}
+  eslintViews: []
+  editorViewSubscription: null
 
   activate: (state) ->
-    atom.workspaceView.eachEditorView (editorView) =>
+    @editorViewSubscription = atom.workspaceView.eachEditorView (editorView) =>
       if editorView.attached and not editorView.mini
-        config = @loadConfig()
+        config = state.config or @loadConfig()
         eslintView = new ESLintView(editorView, config)
+
+        editorView.on 'editor:will-be-removed', =>
+          eslintView.remove() unless eslintView.hasParent()
+          _.remove(@eslintViews, eslintView)
+        @eslintViews.push(eslintView)
+
+  deactivate: ->
+    @editorSubscription?.off()
+    @editorSubscription = null
+    @eslintViews.forEach (eslintView) -> eslintView.remove()
+    @eslintViews = []
+
+  serialize: ->
+    config: @config
 
   loadConfig: ->
     unless @config?
