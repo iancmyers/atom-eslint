@@ -28,9 +28,9 @@ class ESLintView extends SelectListView
 
   getEmptyMessage: (itemCount, filteredItemCount) ->
     if itemCount is 0
-      'No errors found.'
+      'No errors found'
     else if filteredItemCount is 0
-      'No matching errors found.'
+      'No matching errors found'
     else
       super
 
