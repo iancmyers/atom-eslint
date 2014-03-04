@@ -1,0 +1,11 @@
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'ESLint'
+      'submenu': [
+        { 'label': 'Lint File', 'command': 'eslint:toggle' }
+      ]
+    ]
+  }
+]
