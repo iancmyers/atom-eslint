@@ -44,10 +44,6 @@ class ESLintView extends SelectListView
     @editorView.command 'eslint:toggle', => @toggle()
     @list.on 'mousewheel', (event) -> event.stopPropagation()
 
-    @filterEditorView.on 'core:confirm', (event) =>
-      console.log 'preempted'
-      false
-
   selectNextItemView: ->
     super
     false
