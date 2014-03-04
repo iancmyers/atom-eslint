@@ -45,7 +45,7 @@ class ESLintView extends SelectListView
   attach: ->
     @storeFocusedElement()
     @setItems(@lint())
-    atom.workspaceView.append(this)
+    @editorView.append(this)
     @focusFilterEditor()
 
   confirmed: ({line, column}) ->

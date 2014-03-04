@@ -1,2 +1,2 @@
-'.workspace .editor':
+'.workspace':
   'ctrl-alt-e': 'eslint:toggle'
