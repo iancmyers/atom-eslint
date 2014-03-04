@@ -1,5 +1,5 @@
 {
-  "name": "eslint",
+  "name": "atom-eslint",
   "main": "./lib/eslint",
   "version": "0.1.0",
   "description": "Lint your JavaScript files in Atom with ESLint",
