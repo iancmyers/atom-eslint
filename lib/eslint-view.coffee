@@ -1,5 +1,5 @@
 eslint = require('eslint').linter
-{$, $$, SelectListView} = require 'atom'
+{$$, SelectListView} = require 'atom'
 
 module.exports =
 class ESLintView extends SelectListView
@@ -8,9 +8,38 @@ class ESLintView extends SelectListView
     super
     @addClass('eslint-report overlay from-top')
     @editor = @editorView.getEditor()
-    @buffer = @editor.getBuffer()
 
     atom.workspaceView.command "eslint:toggle", => @toggle()
+
+  getFilterKey: ->
+    'message'
+
+  toggle: ->
+    if @hasParent()
+      @cancel()
+    else
+      @lint()
+      @attach()
+
+  lint: ->
+    @lang = @editor.getGrammar().name
+
+    if @lang is 'JavaScript'
+      buffer = @editor.getBuffer()
+      messages = eslint.verify buffer.getText(), @config
+      @setItems messages
+    else
+      @setItems []
+
+  getEmptyMessage: (itemCount, filteredItemCount) ->
+    if @lang isnt 'JavaScript'
+      'Not a JavaScript file'
+    else if itemCount is 0
+      'No errors found'
+    else if filteredItemCount is 0
+      'No matching errors found'
+    else
+      super
 
   viewForItem: ({message, line, column}) ->
     $$ ->
@@ -20,34 +49,11 @@ class ESLintView extends SelectListView
         @span class: 'eslint-column eslint-loc', column
         @span class: 'eslint-message', ' ' + message
 
-  toggle: ->
-    if @hasParent()
-      @cancel()
-    else
-      @attach()
-
-  getEmptyMessage: (itemCount, filteredItemCount) ->
-    if itemCount is 0
-      'No errors found'
-    else if filteredItemCount is 0
-      'No matching errors found'
-    else
-      super
-
-  getFilterKey: ->
-    'message'
-
-  lint: ->
-    text = @buffer.getText()
-    messages = eslint.verify text, @config
-    messages
-
-  attach: ->
-    @storeFocusedElement()
-    @setItems(@lint())
-    @editorView.append(this)
-    @focusFilterEditor()
-
   confirmed: ({line, column}) ->
     @cancel()
     @editor.setCursorBufferPosition([line - 1, column])
+
+  attach: ->
+    @storeFocusedElement()
+    @editorView.append(this)
+    @focusFilterEditor()
