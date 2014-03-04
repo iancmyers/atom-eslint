@@ -12,4 +12,4 @@ apm install eslint
 
 ## Usage
 
-`ctrl-alt, e` will lint the current file and display the errors in a list. Selecting an error will take you to that error's location.
+`ctrl-alt-e` will lint the current file and display the errors in a list. Selecting an error will take you to that error's location.
