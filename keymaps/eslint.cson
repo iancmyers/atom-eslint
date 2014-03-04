@@ -1,2 +1,6 @@
-'.workspace':
+'.editor':
   'ctrl-alt-e': 'eslint:toggle'
+
+'.eslint-report .mini.editor input':
+  'enter': 'core:confirm'
+  'tab': 'core:confirm'
