@@ -10,7 +10,7 @@ class ESLintView extends SelectListView
     @editor = @editorView.getEditor()
     @buffer = @editor.getBuffer()
 
-    atom.workspaceView.command "eslint:toggle", @toggle
+    atom.workspaceView.command "eslint:toggle", => @toggle()
 
   viewForItem: ({message, line, column}) ->
     $$ ->
@@ -20,7 +20,7 @@ class ESLintView extends SelectListView
         @span class: 'eslint-column eslint-loc', column
         @span class: 'eslint-message', ' ' + message
 
-  toggle: =>
+  toggle: ->
     if @hasParent()
       @cancel()
     else
