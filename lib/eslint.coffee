@@ -17,12 +17,12 @@ module.exports =
         editorView.on 'editor:will-be-removed', =>
           eslintView.remove() unless eslintView.hasParent()
           _.remove(@eslintViews, eslintView)
-          
+
         @eslintViews.push(eslintView)
 
   deactivate: ->
-    @editorSubscription?.off()
-    @editorSubscription = null
+    @editorViewSubscription?.off()
+    @editorViewSubscription = null
     @eslintViews.forEach (eslintView) -> eslintView.remove()
     @eslintViews = []
 
