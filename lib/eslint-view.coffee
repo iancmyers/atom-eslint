@@ -4,12 +4,11 @@ eslint = require('eslint').linter
 module.exports =
 class ESLintView extends SelectListView
 
-  initialize: (@editorView, @config) ->
+  initialize: (@editorView, @conf) ->
     super
-    @addClass('eslint-report overlay from-top')
-    @editor = @editorView.getEditor()
-
-    atom.workspaceView.command "eslint:toggle", => @toggle()
+    @addClass('eslint-report popover-list')
+    {@editor} = @editorView
+    @handleEvents()
 
   getFilterKey: ->
     'message'
@@ -26,7 +25,7 @@ class ESLintView extends SelectListView
 
     if @lang is 'JavaScript'
       buffer = @editor.getBuffer()
-      messages = eslint.verify buffer.getText(), @config
+      messages = eslint.verify buffer.getText(), @conf
       @setItems messages
     else
       @setItems []
@@ -41,19 +40,50 @@ class ESLintView extends SelectListView
     else
       super
 
+  handleEvents: ->
+    @editorView.command 'eslint:toggle', => @toggle()
+    @list.on 'mousewheel', (event) -> event.stopPropagation()
+
+    @filterEditorView.on 'core:confirm', (event) =>
+      console.log 'preempted'
+      false
+
+  selectNextItemView: ->
+    super
+    false
+
+  selectPreviousItemView: ->
+    super
+    false
+
   viewForItem: ({message, line, column}) ->
     $$ ->
       @li =>
         @span class: 'eslint-line eslint-loc', line
         @span class: 'eslint-separator', ':'
         @span class: 'eslint-column eslint-loc', column
-        @span class: 'eslint-message', ' ' + message
+        @span class: 'eslint-message', message
+
+  cancelled: ->
+    super
+    @editorView.focus()
 
   confirmed: ({line, column}) ->
     @cancel()
     @editor.setCursorBufferPosition([line - 1, column])
 
   attach: ->
-    @storeFocusedElement()
-    @editorView.append(this)
+    @editorView.appendToLinesView(this)
+    @setPosition()
     @focusFilterEditor()
+
+  setPosition: ->
+    {top, left} = @editorView.offset()
+    editorWidth = @editorView.width() / 2
+    selectWidth = this.width() / 2
+    leftPos = editorWidth - selectWidth + left
+    @css(top: top, left: leftPos, maxWidth: @editorView.width())
+
+  populateList: ->
+    super
+    @setPosition()

@@ -4,10 +4,19 @@
 // for a full listing of what's available.
 @import "ui-variables";
 
-.eslint-report {
+.editor .eslint-report.popover-list {
+  position: fixed !important;
+  width: auto !important;
+  border-top: none;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 
   .eslint-separator, .eslint-loc {
     color: @text-color-subtle;
+  }
+
+  .eslint-message {
+    padding: 0 5px;
   }
 
 }
