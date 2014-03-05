@@ -1,15 +1,12 @@
-// The ui-variables file is provided by base themes provided by Atom.
-//
-// See https://github.com/atom/atom-dark-ui/blob/master/stylesheets/ui-variables.less
-// for a full listing of what's available.
 @import "ui-variables";
 
 .editor .eslint-report.popover-list {
-  position: fixed !important;
-  width: auto !important;
-  border-top: none;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+  position: fixed;
+  width: auto;
+
+  .error-message {
+    color: @text-color-error;
+  }
 
   .eslint-separator, .eslint-loc {
     color: @text-color-subtle;
@@ -18,5 +15,4 @@
   .eslint-message {
     padding: 0 5px;
   }
-
 }

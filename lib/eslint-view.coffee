@@ -32,6 +32,7 @@ class ESLintView extends SelectListView
       @setItems []
 
   getEmptyMessage: (itemCount, filteredItemCount) ->
+    console.log this
     if @lang isnt 'JavaScript'
       'Not a JavaScript file'
     else if itemCount is 0
@@ -79,7 +80,7 @@ class ESLintView extends SelectListView
     editorWidth = @editorView.width() / 2
     selectWidth = this.width() / 2
     leftPos = editorWidth - selectWidth + left
-    @css(top: top, left: leftPos, maxWidth: @editorView.width())
+    @css(top: top + 10, left: leftPos, maxWidth: @editorView.width())
 
   populateList: ->
     super
