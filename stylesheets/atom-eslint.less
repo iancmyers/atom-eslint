@@ -1,18 +1,31 @@
 @import "ui-variables";
+@import "syntax-variables";
 
-.editor .eslint-report.popover-list {
-  position: fixed;
-  width: auto;
+.editor  {
+  .eslint-report {
+    &.popover-list {
+      position: fixed;
+      width: auto;
+    }
 
-  .error-message {
-    color: @text-color-error;
+    .error-message {
+      color: @text-color-error;
+    }
+
+    .eslint-separator, .eslint-loc {
+      color: @text-color-subtle;
+    }
+
+    .eslint-message {
+      padding: 0 5px;
+    }
   }
 
-  .eslint-separator, .eslint-loc {
-    color: @text-color-subtle;
+  .gutter .line-number {
+    &.eslint-gutter-error {
+      background: lighten(@background-color-error, 35%);
+      color: @text-color-error;
+    }
   }
 
-  .eslint-message {
-    padding: 0 5px;
-  }
 }

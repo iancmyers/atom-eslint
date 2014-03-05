@@ -1,31 +1,23 @@
-ESLintView = require './eslint-view'
+ESLintListView = require './eslint-list-view'
+ESLintGutterView = require './eslint-gutter-view'
+
 fs = require 'fs'
 _ = require 'underscore-plus'
 eslint = require('eslint').linter
 
 module.exports =
-  eslintViews: []
-  editorViewSubscription: null
 
   activate: ->
     @config = @config or @loadConfig()
-
-    @editorViewSubscription = atom.workspaceView.eachEditorView (editorView) =>
+    atom.workspaceView.eachEditorView (editorView) =>
       if editorView.attached and not editorView.mini
-        eslintView = new ESLintView(editorView, @config)
+        eslintListView = new ESLintListView(editorView, @config)
+        eslintGutterView = new ESLintGutterView(editorView, @config)
 
-        editorView.on 'editor:will-be-removed', =>
-          eslintView.remove() unless eslintView.hasParent()
-          _.remove(@eslintViews, eslintView)
-
-        @eslintViews.push(eslintView)
-
-  deactivate: ->
-    @editorViewSubscription?.off()
-    @editorViewSubscription = null
-    @eslintViews.forEach (eslintView) -> eslintView.remove()
-    @eslintViews = []
-    @config = null
+        editorView.on 'editor:will-be-removed', ->
+          eslintListView.remove()
+          eslintGutterView.unsubscribe()
+          eslintGutterView.unsubscribeFromBuffer()
 
   loadConfig: ->
     configPath = atom.project.getPath() + '/.eslintrc'

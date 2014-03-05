@@ -4,7 +4,7 @@ eslint = require('eslint').linter
 module.exports =
 class ESLintView extends SelectListView
 
-  initialize: (@editorView, @conf) ->
+  initialize: (@editorView, @config) ->
     super
     @addClass('eslint-report popover-list')
     {@editor} = @editorView
@@ -25,7 +25,7 @@ class ESLintView extends SelectListView
 
     if @lang is 'JavaScript'
       buffer = @editor.getBuffer()
-      messages = eslint.verify(buffer.getText(), @conf)
+      messages = eslint.verify(buffer.getText(), @config)
       @setItems messages.sort (a, b) ->
         a.line - b.line
     else
