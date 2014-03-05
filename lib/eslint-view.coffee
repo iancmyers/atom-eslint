@@ -26,7 +26,8 @@ class ESLintView extends SelectListView
     if @lang is 'JavaScript'
       buffer = @editor.getBuffer()
       messages = eslint.verify(buffer.getText(), @conf)
-      @setItems(messages)
+      @setItems messages.sort (a, b) ->
+        a.line - b.line
     else
       @setItems []
 
@@ -72,7 +73,6 @@ class ESLintView extends SelectListView
     @editorView.appendToLinesView(this)
     @setPosition()
     @focusFilterEditor()
-    # @filterEditorView.focus()
 
   setPosition: ->
     {top, left} = @editorView.offset()
