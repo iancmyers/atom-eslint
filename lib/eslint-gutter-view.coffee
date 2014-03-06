@@ -15,6 +15,9 @@ class ESLintGutterView
 
     @subscribeToBuffer()
 
+  setConfig: (@config) ->
+    @scheduleUpdate()
+
   unsubscribeFromBuffer: ->
     if @buffer?
       @removeErrors()

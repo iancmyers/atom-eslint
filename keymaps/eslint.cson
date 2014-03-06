@@ -1,5 +1,6 @@
 '.editor':
-  'ctrl-alt-e': 'eslint:toggle'
+  'cmd-alt-l': 'eslint:lint'
+  'cmd-alt-shift-l': 'eslint:reload-config'
 
 '.eslint-report .mini.editor input':
   'enter': 'core:confirm'

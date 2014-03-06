@@ -4,7 +4,8 @@
     'submenu': [
       'label': 'ESLint'
       'submenu': [
-        { 'label': 'Lint File', 'command': 'eslint:toggle' }
+        { 'label': 'Lint File', 'command': 'eslint:lint' }
+        { 'label': 'Reload .eslintrc', 'command': 'eslint:reload-config' }
       ]
     ]
   }

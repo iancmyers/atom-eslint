@@ -14,6 +14,11 @@ module.exports =
         eslintListView = new ESLintListView(editorView, @config)
         eslintGutterView = new ESLintGutterView(editorView, @config)
 
+        editorView.on 'eslint:reload-config', =>
+          @config = @loadConfig()
+          eslintListView.setConfig(@config)
+          eslintGutterView.setConfig(@config)
+
         editorView.on 'editor:will-be-removed', ->
           eslintListView.remove()
           eslintGutterView.unsubscribe()

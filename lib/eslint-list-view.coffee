@@ -10,6 +10,8 @@ class ESLintView extends SelectListView
     {@editor} = @editorView
     @handleEvents()
 
+  setConfig: (@config) ->
+
   getFilterKey: ->
     'message'
 
@@ -43,7 +45,7 @@ class ESLintView extends SelectListView
       super
 
   handleEvents: ->
-    @editorView.command 'eslint:toggle', => @toggle()
+    @editorView.command 'eslint:lint', => @toggle()
     @list.on 'mousewheel', (event) -> event.stopPropagation()
 
   selectNextItemView: ->
