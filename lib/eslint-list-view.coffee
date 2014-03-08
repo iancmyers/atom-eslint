@@ -25,7 +25,7 @@ class ESLintView extends SelectListView
   lint: ->
     @lang = @editor.getGrammar().name
 
-    if @lang is 'JavaScript'
+    if @lang is 'JavaScript' or @editor.getTitle().match(/\.js$/)
       buffer = @editor.getBuffer()
       messages = eslint.verify(buffer.getText(), @config)
       @setItems messages.sort (a, b) ->

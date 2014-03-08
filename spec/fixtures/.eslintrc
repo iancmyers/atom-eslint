@@ -1,0 +1,13 @@
+{
+  "env": {
+    "node": true
+  },
+
+  "rules": {
+    "brace-style": [2, "1tbs"],
+    "quotes": [2, "single"],
+    "strict": 0,
+    "no-console": 0,
+    "no-use-before-define": 0
+  }
+}

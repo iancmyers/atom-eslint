@@ -36,8 +36,9 @@ class ESLintGutterView
 
   lint: =>
     @lang = @editor.getGrammar().name
-    return unless @buffer? and @lang is 'JavaScript'
+    return unless @buffer? and (@lang is 'JavaScript' or @editor.getTitle().match(/\.js$/))
     @messages = eslint.verify(@buffer.getText(), @config)
+    console.log @messages
     @messages.sort (a, b) ->
       a.line - b.line
     @renderErrors()

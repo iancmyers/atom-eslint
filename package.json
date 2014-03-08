@@ -11,6 +11,8 @@
   "dependencies": {
     "eslint": "~0.4.2",
     "underscore-plus": "~1.0.4",
-    "emissary": "~1.0.0"
+    "emissary": "~1.0.0",
+    "temp": "~0.7.0",
+    "fs-plus": "~2.0.2"
   }
 }
