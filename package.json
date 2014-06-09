@@ -9,7 +9,7 @@
     "atom": ">0.64.0"
   },
   "dependencies": {
-    "eslint": "^0.4",
+    "eslint": "^0.6",
     "underscore-plus": "^1.0",
     "emissary": "^1.0",
     "temp": "^0.7",
