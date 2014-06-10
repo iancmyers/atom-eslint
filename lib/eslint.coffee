@@ -8,6 +8,7 @@ eslint = require('eslint').linter
 module.exports =
 
   activate: ->
+    atom.config.setDefaults("eslint", configFile: '.eslintrc')
     @config = @config or @loadConfig()
     atom.workspaceView.eachEditorView (editorView) =>
       if editorView.attached and not editorView.mini
@@ -25,7 +26,8 @@ module.exports =
           eslintGutterView.unsubscribeFromBuffer()
 
   loadConfig: ->
-    configPath = atom.project.getPath() + '/.eslintrc'
+    configFileName = atom.config.get 'eslint.configFile'
+    configPath = atom.project.getPath() + '/' + configFileName
     mergedConfig = {}
     defaults = eslint.defaults()
 
@@ -33,7 +35,7 @@ module.exports =
       configFile = fs.readFileSync configPath, 'UTF8'
       try eslintrc = JSON.parse configFile
       catch e
-        console.error 'Could not parse .eslintrc file'
+        console.error 'Could not parse file (' + configFileName + ')'
 
       mergedConfig.rules = _.extend defaults.rules, eslintrc.rules
       mergedConfig.env = _.extend defaults.env, eslintrc.env
